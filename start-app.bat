@@ -37,6 +37,9 @@ if not exist "node_modules" (
     echo.
 )
 
+REM Set environment variable to skip platform check for Windows Server 2012 R2
+set NODE_SKIP_PLATFORM_CHECK=1
+
 REM Start Expo
 echo Starting Expo development server...
 echo QR code will appear shortly

@@ -18,6 +18,9 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
+REM Set environment variable to skip platform check for Windows Server 2012 R2
+set NODE_SKIP_PLATFORM_CHECK=1
+
 echo [1/4] Installing backend dependencies...
 cd /d "%~dp0backend"
 if not exist "node_modules" (

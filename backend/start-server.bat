@@ -61,6 +61,9 @@ if not exist ".env" (
     echo.
 )
 
+REM Set environment variable to skip platform check for Windows Server 2012 R2
+set NODE_SKIP_PLATFORM_CHECK=1
+
 REM Start the server
 echo Starting backend server...
 echo Server will run on http://localhost:3000

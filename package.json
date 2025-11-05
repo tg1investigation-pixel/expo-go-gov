@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "set NODE_SKIP_PLATFORM_CHECK=1 && expo start",
+    "android": "set NODE_SKIP_PLATFORM_CHECK=1 && expo start --android",
+    "ios": "set NODE_SKIP_PLATFORM_CHECK=1 && expo start --ios",
+    "web": "set NODE_SKIP_PLATFORM_CHECK=1 && expo start --web",
+    "start:win": "set NODE_SKIP_PLATFORM_CHECK=1 && expo start"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.11",

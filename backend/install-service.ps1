@@ -20,6 +20,10 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $nodePath = (Get-Command node).Source
 $serverPath = Join-Path $scriptPath "server.js"
 
+# Set environment variable for Windows Server 2012 R2 compatibility
+$env:NODE_SKIP_PLATFORM_CHECK = "1"
+[System.Environment]::SetEnvironmentVariable("NODE_SKIP_PLATFORM_CHECK", "1", "Machine")
+
 # Check if Node.js is installed
 if (-not $nodePath) {
     Write-Host "ERROR: Node.js is not installed or not in PATH" -ForegroundColor Red
