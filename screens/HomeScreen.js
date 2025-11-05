@@ -8,13 +8,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { authService } from '../services/api';
+import { useAuth } from '../services/AuthContext';
 import { COLORS } from '../config/constants';
 
 export default function HomeScreen({ navigation }) {
+  const { logout } = useAuth();
+  
   const handleLogout = async () => {
-    await authService.logout();
-    navigation.replace('Login');
+    await logout();
+    // Navigation is handled by App.js state change
   };
 
   return (

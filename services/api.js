@@ -1,10 +1,14 @@
 import axios from 'axios';
+import { mockAuthService, mockSearchService } from './mockApi';
 import * as SecureStore from 'expo-secure-store';
 
 // Configure your backend API URL here
-const API_BASE_URL = __DEV__ 
-  ? 'http://10.100.145.100:3000/api' // Development URL - Use this IP for physical device testing
-  : 'https://your-production-api.com/api'; // Production URL
+// Use mock API in development for easier testing if backend is not available
+const USE_MOCK_API = __DEV__;
+
+const API_BASE_URL = USE_MOCK_API
+  ? 'http://mock-api-used' // Placeholder, actual calls will be intercepted
+  : 'https://your-production-api.com/api'; // Production URL (replace with your actual URL)
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -41,7 +45,7 @@ api.interceptors.response.use(
   }
 );
 
-export const authService = {
+export const authService = USE_MOCK_API ? mockAuthService : {
   async login(username, password) {
     try {
       const response = await api.post('/auth/login', { username, password });
@@ -80,7 +84,7 @@ export const authService = {
   },
 };
 
-export const searchService = {
+export const searchService = USE_MOCK_API ? mockSearchService : {
   async searchPeople(query, searchType) {
     try {
       const response = await api.post('/search/people', {

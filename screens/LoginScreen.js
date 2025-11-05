@@ -12,10 +12,11 @@ import {
   ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { authService } from '../services/api';
+import { useAuth } from '../services/AuthContext';
 import { COLORS } from '../config/constants';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,8 +34,7 @@ export default function LoginScreen({ navigation }) {
     setIsLoading(false);
 
     if (result.success) {
-      // Navigation will be handled by App.js based on auth state
-      navigation.replace('Home');
+      // AuthContext handles state change, which re-renders App.js and navigates automatically
     } else {
       Alert.alert('Login Failed', result.error || 'Invalid credentials');
     }
