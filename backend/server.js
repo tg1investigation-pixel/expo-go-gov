@@ -3,6 +3,8 @@ const mysql = require('mysql2/promise');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const os = require('os');
 require('dotenv').config();
 
 const app = express();
@@ -495,15 +497,31 @@ app.get('/api/db/info', authenticateToken, async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📡 API endpoints available at http://localhost:${PORT}/api`);
+  console.log(`🖥️  Platform: ${os.platform()} ${os.release()}`);
+  console.log(`📁 Working Directory: ${process.cwd()}`);
   await testConnection();
 });
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('\n👋 Shutting down server...');
-  await pool.end();
-  process.exit(0);
+// Graceful shutdown for Windows Server
+process.on('SIGTERM', () => {
+  console.log('\n👋 SIGTERM received, shutting down gracefully...');
+  server.close(async () => {
+    await pool.end();
+    process.exit(0);
+  });
 });
+
+// Handle Windows Server service stop
+if (process.platform === 'win32') {
+  process.on('SIGINT', async () => {
+    console.log('\n👋 Shutting down server...');
+    server.close(async () => {
+      await pool.end();
+      process.exit(0);
+    });
+  });
+}
+
